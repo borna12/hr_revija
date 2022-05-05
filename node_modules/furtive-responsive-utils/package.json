@@ -1,0 +1,27 @@
+{
+  "name": "furtive-responsive-utils",
+  "version": "0.0.1",
+  "description": "An extensible collection of responsive utilities.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/furtivecss/responsive-utils.git"
+  },
+  "keywords": [
+    "responsive",
+    "fluid",
+    "utils",
+    "css",
+    "rework",
+    "furtive"
+  ],
+  "author": "John Otander",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/furtivecss/responsive-utils/issues"
+  },
+  "homepage": "https://github.com/furtivecss/responsive-utils"
+}

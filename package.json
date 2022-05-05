@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "bulma": "^0.9.3",
+    "markdown-air": "^0.0.4"
+  }
+}
