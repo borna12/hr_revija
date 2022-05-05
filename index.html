@@ -11,8 +11,6 @@
   <link title=style href="stil/tekst.css" type=text/css rel=stylesheet>
   <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
     crossorigin="anonymous"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 </head>
 <section class="hero is-info">
   <div class="hero-body">
@@ -38,7 +36,7 @@
               Članci
             </a>
 
-            <div class="navbar-dropdown">
+            <div class="navbar-dropdown ajde">
               <a class="navbar-item" href="naslovi/indeksabc.html">
                 Naslovi
               </a>
@@ -135,16 +133,19 @@
   </div>
 </footer>
 <script>// bulma navigation/dropdowns
-   $(document).ready(function() {
+  $(document).ready(function () {
 
-// Check for click events on the navbar burger icon
-$(".navbar-burger").click(function() {
-
-    // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-    $(".navbar-burger").toggleClass("is-active");
-    $(".navbar-menu").toggleClass("is-active");
-
-});
-});</script>
+    // just control the "is-action" class for the drop down menu, and use the above css to control this display
+    $(".navbar-item.has-dropdown")
+      .click(function () {
+        $(this).children(".navbar-dropdown").toggleClass("is-active");
+      });  
+    $(".nested")
+      .click(function () {
+      
+        $(this).children(".dropdown-menu").toggleClass("is-active");
+        $(".ajde").toggleClass("is-active");
+      });
+  });</script>
 
 </html>
