@@ -28,9 +28,7 @@
 </section>
 <div class="container">
   <div class="content">
-
     <nav class="navbar " role="navigation">
-
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
 
@@ -137,7 +135,6 @@
 </footer>
 <script>// bulma navigation/dropdowns
   $(document).ready(function () {
-
     // just control the "is-action" class for the drop down menu, and use the above css to control this display
     $(".navbar-item.has-dropdown")
       .click(function () {
@@ -145,9 +142,22 @@
       });  
     $(".nested")
       .click(function () {
-        $(this).children(".dropdown-menu").toggleClass("is-active");
+        $(this).children(".dropdown-menu").toggle();
         $(".ajde").toggleClass("is-active");
       });
-  });</script>
+ });
+ 
+ $(document).mouseup(function(e) 
+{
+    var container = $(".navbar");
+
+    // if the target of the click isn't the container nor a descendant of the container
+    if (!container.is(e.target) && container.has(e.target).length === 0) 
+    {
+      $(".navbar-dropdown").removeClass("is-active")
+    }
+});
+ 
+ </script>
 
 </html>
