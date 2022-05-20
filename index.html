@@ -161,7 +161,7 @@
         $.ajax({
             'async': false,
             'global': false,
-            'url': "trazilica.json",
+            'url': "test2.json",
             'dataType': "json",
             'success': function (data) {
                 json = data;
@@ -223,8 +223,8 @@
 
             priority += 100;
           }
-         /* let occurences = article.content.match(reg);
-          if (occurences) { priority += occurences.length; }*/
+          let occurences = article.opis.match(reg);
+          if (occurences) { priority += occurences.length; }
         }
 
         // If any matches, push to results
