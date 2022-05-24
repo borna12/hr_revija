@@ -12,6 +12,8 @@
   <link title=style href="stil/tekst.css" type=text/css rel=stylesheet>
   <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
     crossorigin="anonymous"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
@@ -119,20 +121,37 @@
         </div>
       </nav>
 
-      <form action="https://duckduckgo.com/" method="get" id="form-search">
-        <label for="input-search">Pretraži bazu:</label>
-        <input type="text" name="q" id="input-search">
-        <input type="hidden" name="sites" value="http://hrevija.lzmk.hr/">
-        <button>traži</button>
+<p></p>
+      <form action="https://duckduckgo.com/" method="get" id="form-search" class="field has-addons">
+        <div class="control is-expanded">
+          <input class="input" type="text" type="text" name="q" id="input-search" placeholder="Pretraži bazu">
+          <input type="hidden" name="sites" value="http://hrevija.lzmk.hr/">
+        </div>
+        <div class="control">
+          <button class="button is-info">
+            Traži
+          </button>
+        </div>
+
       </form>
+
       <div id="search-status" role="status"></div>
       <div id="search-results"></div>
+      <p></p>
+      <p>Bibliografija je izrađena u Uredni&scaron;tvu Thesaurusa Leksikografskoga zavoda "Miroslav Krleža".</p>
+      <p>Glavna urednica: &nbsp;Nata&scaron;a Ba&scaron;ić</p>
+      <p>Uredni&scaron;tvo: Tatjana Dobričević, Jasna Ivančić, Irina Starčević-Stančić, Ivana &Scaron;iprak, Ankica
+        &Scaron;unjić</p>
+      <p>Tajnica: &nbsp;Biserka Babić</p>
     </div>
   </div>
 
   <!-- Mirrored from hrevija.lzmk.hr/web/HR/katknj.htm by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 May 2022 16:38:14 GMT -->
+
+
   <footer class="footer">
     <div class="content has-text-centered">
+
       <p><a href="https://www.lzmk.hr/"><img src="logo.png" style="margin: auto;" /></a></p>
       <p>
 
@@ -157,36 +176,18 @@
   });
 
   let searchIndex = (function () {
-        var json = null;
-        $.ajax({
-            'async': false,
-            'global': false,
-            'url': "test2.json",
-            'dataType': "json",
-            'success': function (data) {
-                json = data;
-            }
-        });
-        return json;
-    })();
-  
- /* [
-    {
-      title: "My awesome article",
-      date: "December 18, 2018",
-      url: "https://gomakethings.com/my-awesome-article",
-      content: "The full text of the content...",
-      summary: "A short summary or preview of the content (can also be a clipped version of the first few sentences)..."
-    },
-    {
-      title: "Awesome 2",
-      date: "December 18, 2018",
-      url: "https://gomakethings.com/my-awesome-article",
-      content: "The full text of the content...",
-      summary: "A short summary or preview of the content (can also be a clipped version of the first few sentences)..."
-    },
-    // More content...
-  ];*/
+    var json = null;
+    $.ajax({
+      'async': false,
+      'global': false,
+      'url': "test2.json",
+      'dataType': "json",
+      'success': function (data) {
+        json = data;
+      }
+    });
+    return json;
+  })();
 
   (function () {
 
@@ -198,19 +199,17 @@
 
     form.addEventListener('submit', submitHandler);
     function submitHandler(event) {
+      document.getElementById("search-results").innerHTML = "";
       event.preventDefault();
       search(input.value);
     }
-
     function search(query) {
-
       // Create a regex for each query
       let regMap = query.toLowerCase().split(' ').filter(function (word) {
         return word.length && !stopWords.includes(word);
       }).map(function (word) {
         return new RegExp(word, 'i');
       });
-
       // Get and sort the results
       let results = searchIndex.reduce(function (results, article, index) {
 
@@ -218,13 +217,15 @@
         let priority = 0;
 
         // Assign priority
+
         for (let reg of regMap) {
           if (reg.test(article.title)) {
-
             priority += 100;
           }
-          let occurences = article.opis.match(reg);
-          if (occurences) { priority += occurences.length; }
+          /* try {
+           let occurences = article.opis.match(reg);
+           if (occurences) { priority += occurences.length; }
+         } catch (error) {console.error(error);}*/
         }
 
         // If any matches, push to results
@@ -239,23 +240,19 @@
       }, []).sort(function (article1, article2) {
         return article2.priority - article1.priority;
       });
-
       // Display the results
       showResults(results);
-
-
-
     }
 
     function showResults(results) {
       if (results.length) {
-        searchStatus.innerHTML = `<p>Pronašli smo ${results.length} objave za vašu pretragu.</p>`;
+        searchStatus.innerHTML = `<p>Broj pronađenih objava: ${results.length}</p>`;
         //str = JSON.stringify(results, null, 4); // (Optional) beautiful indented output.
         //jazon = jQuery.parseJSON(str);
 
         for (var i = 0; i < results.length; i++) {
           var obj = results[i];
-          resultList.innerHTML += "<br><a href='"+obj.article.url+"'>"+obj.article.title+"</a>"
+          resultList.innerHTML += "<br><a class='has-tooltip-arrow has-tooltip-multiline' href='#" + obj.article.id + "' onclick='obavijest(this)' data-tooltip='"+obj.article.opis+"'>" + obj.article.title + "</a>"
 
         }
         //results.article.title
@@ -284,6 +281,23 @@
       $(".navbar-dropdown").removeClass("is-active")
     }
   });
+
+  obavijest = function (e) {
+    id = $(e).attr('href').substring(1);
+
+    for (var i = 0; i < searchIndex.length; i++) {
+      var obj = searchIndex[i];
+      if (String(obj.id) == id) {
+        Swal.fire({
+          title: obj.title,
+          html: obj.opis.replace(/\r\n/g, '<br>'),
+          showCloseButton: true,
+          confirmButtonText:
+            'Zatvori',
+        })
+      }
+    }
+  }
 
 </script>
 

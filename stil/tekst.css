@@ -31,7 +31,10 @@
 .navbar-menu{display: block;}
 
 .swal2-html-container, .swal2-html-container{text-align: justify!important;}
-
+.hero.is-info, .button.is-info{background-color: #683129;}
+.swal2-styled.swal2-confirm{background-color: #683129!important;}
+.button.is-info:hover{background-color:#3a1611}
+.navbar-link:not(.is-arrowless)::after{border-color:#683129}
 @media screen and (max-width: 1024px) {
     .navbar-dropdown .is-active {
       display: block;

@@ -16,7 +16,6 @@ let searchIndex = (function () {
 $(function () {
     obavijest = function (e) {
         id=$(e).attr('href').substring(1);
-        
         for (var i = 0; i < searchIndex.length; i++) {
             var obj = searchIndex[i];
             if (String(obj.id)==id){
@@ -24,11 +23,8 @@ $(function () {
                     title: obj.title,
                     html:obj.opis.replace(/\r\n/g, '<br>'),
                     showCloseButton: true,
-                    focusConfirm: false,
                     confirmButtonText:
                       'Zatvori',
-                    confirmButtonAriaLabel: 'Thumbs up, great!',
-
                   })
             }
           }
