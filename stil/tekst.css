@@ -30,6 +30,8 @@
 
 .navbar-menu{display: block;}
 
+.swal2-html-container, .swal2-html-container{text-align: justify!important;}
+
 @media screen and (max-width: 1024px) {
     .navbar-dropdown .is-active {
       display: block;

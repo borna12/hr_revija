@@ -16,22 +16,19 @@ let searchIndex = (function () {
 $(function () {
     obavijest = function (e) {
         id=$(e).attr('href').substring(1);
-
+        
         for (var i = 0; i < searchIndex.length; i++) {
             var obj = searchIndex[i];
             if (String(obj.id)==id){
                 Swal.fire({
                     title: obj.title,
-                    html:obj.opis,
+                    html:obj.opis.replace(/\r\n/g, '<br>'),
                     showCloseButton: true,
-                    showCancelButton: true,
                     focusConfirm: false,
                     confirmButtonText:
-                      '<i class="fa fa-thumbs-up"></i> Great!',
+                      'Zatvori',
                     confirmButtonAriaLabel: 'Thumbs up, great!',
-                    cancelButtonText:
-                      '<i class="fa fa-thumbs-down"></i>',
-                    cancelButtonAriaLabel: 'Thumbs down'
+
                   })
             }
           }
