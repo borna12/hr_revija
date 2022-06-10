@@ -69,13 +69,9 @@
                       <a href="prmdjl/indeksabc.html" class="dropdown-item">
                         Djela
                       </a>
-
-
                     </div>
                   </div>
                 </div>
-
-
               </div>
             </div>
             <div class="navbar-item has-dropdown is-hoverable">
@@ -97,9 +93,7 @@
             <div class="navbar-item has-dropdown is-hoverable">
               <a class="navbar-link">
                 Knjižnica Hrvatske Revije
-
               </a>
-
               <div class="navbar-dropdown">
                 <a class="navbar-item" href="knjiz/indeksabc.html">
                   Naslovi
@@ -107,17 +101,19 @@
                 <a class="navbar-item" href="knjizaut/indeksabc.html">
                   Autori
                 </a>
-
               </div>
             </div>
           </div>
-
-
         </div>
       </nav>
-
 <p></p>
       <form action="https://duckduckgo.com/" method="get" id="form-search" class="field has-addons">
+        <div class="select">
+          <select id="odabir">
+            <option value="Naslov">Naslov</option>
+            <option value="Autor">Autor</option>
+          </select>
+        </div>
         <div class="control is-expanded">
           <input class="input" type="text" type="text" name="q" id="input-search" placeholder="Pretraži bazu">
           <input type="hidden" name="sites" value="http://hrevija.lzmk.hr/">
@@ -150,7 +146,7 @@
                 &Scaron;unjić</p>
               <p>Tajnica: &nbsp;Biserka Babić</p></div>
             </div></div>
-
+            <div class="back-to-top-wrapper"><a href="#navbarBasicExample" class="back-to-top-link" aria-label="Scroll to Top"><i class="fa fa-chevron-up" aria-hidden="true"></i></a></div>
   </div>
 
   <!-- Mirrored from hrevija.lzmk.hr/web/HR/katknj.htm by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 May 2022 16:38:14 GMT -->
@@ -187,7 +183,7 @@
     $.ajax({
       'async': false,
       'global': false,
-      'url': "test2.json",
+      'url': "listici.json",
       'dataType': "json",
       'success': function (data) {
         json = data;
@@ -197,7 +193,7 @@
   })();
 
   (function () {
-
+  
     // Get the DOM elements
     let form = document.querySelector('#form-search');
     let input = document.querySelector('#input-search');
@@ -211,6 +207,8 @@
       search(input.value);
     }
     function search(query) {
+      var selector = document.getElementById("odabir");
+    var filter = selector.value;
       // Create a regex for each query
       let regMap = query.toLowerCase().split(' ').filter(function (word) {
         return word.length && !stopWords.includes(word);
@@ -224,17 +222,29 @@
         let priority = 0;
 
         // Assign priority
-
+        if (filter=="Naslov"){
         for (let reg of regMap) {
-          if (reg.test(article.title)) {
+          if (reg.test(article.Title)) {
             priority += 100;
           }
           /* try {
-           let occurences = article.opis.match(reg);
+           let occurences = article.Autor.match(reg);
            if (occurences) { priority += occurences.length; }
          } catch (error) {console.error(error);}*/
         }
-
+      }
+     
+      else if (filter=="Autor"){
+        for (let reg of regMap) {
+          if (reg.test(article.Autor)) {
+            priority += 100;
+          }
+          /* try {
+           let occurences = article.Autor.match(reg);
+           if (occurences) { priority += occurences.length; }
+         } catch (error) {console.error(error);}*/
+        }
+      }
         // If any matches, push to results
         if (priority > 0) {
           results.push({
@@ -259,7 +269,7 @@
 
         for (var i = 0; i < results.length; i++) {
           var obj = results[i];
-          resultList.innerHTML += "<br><a class='has-tooltip-arrow has-tooltip-multiline' href='#" + obj.article.id + "' onclick='obavijest(this)' data-tooltip='"+obj.article.opis+"'>" + obj.article.title + "</a>"
+          resultList.innerHTML += "<br><a class='has-tooltip-arrow has-tooltip-multiline' href='#" + obj.article.Id + "' onclick='obavijest(this)' data-tooltip='"+obj.article.Opis+"'>" + obj.article.Title + "</a>"
 
         }
         //results.article.title
@@ -272,7 +282,7 @@
 
     }
 
-    let stopWords = ['a', 'an', 'and', 'are', 'aren\'t', 'as', 'by', 'can', 'cannot', 'can\'t', 'could', 'couldn\'t', 'how', 'is', 'isn\'t', 'it', 'its', 'it\'s', 'that', 'the', 'their', 'there', 'they', 'they\'re', 'them', 'to', 'too', 'us', 'very', 'was', 'we', 'well', 'were', 'what', 'whatever', 'when', 'whenever', 'where', 'with', 'would', 'yet', 'you', 'your', 'yours', 'yourself', 'yourselves', 'the', 'vanilla', 'javascript', 'js'];
+    let stopWords = [',', 'i', 'u', ' ', ':', 'ili', 'ako', 'can', 'cannot', 'can\'t', 'could', 'couldn\'t', 'how', 'is', 'isn\'t', 'it', 'its', 'it\'s', 'that', 'the', 'their', 'there', 'they', 'they\'re', 'them', 'to', 'too', 'us', 'very', 'was', 'we', 'well', 'were', 'what', 'whatever', 'when', 'whenever', 'where', 'with', 'would', 'yet', 'you', 'your', 'yours', 'yourself', 'yourselves', 'the', 'vanilla', 'javascript', 'js'];
 
     // Make sure required content exists
     if (!form || !input || !resultList || !searchStatus || !searchIndex) return;
@@ -294,18 +304,60 @@
 
     for (var i = 0; i < searchIndex.length; i++) {
       var obj = searchIndex[i];
-      if (String(obj.id) == id) {
+      opis=""
+      if (obj.Autor==obj.Opis.substring(0, obj.Autor.length)){
+          opis = obj.Opis.substring(obj.Autor.length, obj.Opis.length)
+      }
+      else{
+        opis=obj.Opis
+      }
+     
+      if (String(obj.Id) == id) {
+        if (obj.Autor.includes(";")){
+        autori=obj.Autor.split(";")
+        autor1=autori[0]
+        autor2=autori[1]
         Swal.fire({
-          title: obj.title,
-          html: obj.opis.replace(/\r\n/g, '<br>'),
+          title: obj.Title,
+          html:"<a href='#"+autor1+"' onclick='radi(this)'>"+autor1+"</a>; <a href='#"+autor2+"' onclick='radi(this)'>"+autor2+"</a><p>"+opis.replace(/\n/g, '<br>')+"</p>",
           showCloseButton: true,
           confirmButtonText:
             'Zatvori',
         })
       }
+      else{
+        Swal.fire({
+          title: obj.Title,
+          html:"<a href='#"+obj.Autor+"' onclick='radi(this)'>"+obj.Autor+"</a><p>"+opis.replace(/\n/g, '<br>')+"</p>",
+          showCloseButton: true,
+          confirmButtonText:
+            'Zatvori',
+        })}
+      }
     }
   }
 
+  function radi(e){
+    $(".swal2-confirm").click();
+    autor=e.innerHTML.split(", ")
+    autor=autor[1]+" "+autor[0]
+    $("#odabir").val("Autor").change();
+    $("#input-search").val(autor.replace("(*)",""))
+    $(".is-info").click();
+  }
+
+
+  if(window.location.hash) {
+    url=decodeURIComponent(window.location.href)
+    var hash = url.substring(url.indexOf('#')).replace("#","");
+    if (hash.includes(", ")){
+      hash=hash.split(", ")
+      hash=hash[1]+" "+hash[0]
+    }
+    $("#input-search").val(hash.replace("(*)",""))
+    $(".is-info").click();
+
+}
 </script>
 
 </html>
