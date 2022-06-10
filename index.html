@@ -350,6 +350,9 @@
   if(window.location.hash) {
     url=decodeURIComponent(window.location.href)
     var hash = url.substring(url.indexOf('#')).replace("#","");
+    if (!isNaN(hash)){
+      $("#input-search").val("")
+    }
     if (hash.includes(", ")){
       hash=hash.split(", ")
       hash=hash[1]+" "+hash[0]
