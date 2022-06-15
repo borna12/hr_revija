@@ -221,11 +221,13 @@
       let results = searchIndex.reduce(function (results, article, index) {
         // Setup priority count
         let priority = 0;
-
+        
         // Assign priority
         if (filter=="Naslov"){
         //for (let reg of regMap) {
-          if (article.Title.toLowerCase().includes(regMap)) {
+          var isEvery = regMap.split(" ").every(function(word){return article.Title.toLowerCase().indexOf(word)>-1});
+
+          if (isEvery) {
             priority += 100;
           }
           /* try {
@@ -238,7 +240,9 @@
       else if (filter=="Autor"){
        // for (let reg of regMap) {
           //if (reg.test(article.Autor)) {
-          if (article.Autor.toLowerCase().includes(regMap)) {
+            var isEvery = regMap.split(" ").every(function(word){return article.Autor.toLowerCase().indexOf(word)>-1});
+
+          if (isEvery) {
             priority += 100;
           }
           /* try {
