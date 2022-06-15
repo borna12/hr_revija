@@ -96,7 +96,7 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) { overflow-y: v
 
 
 @media screen and (max-width: 1024px) {
-
+ #form-search,#search-results,#search-status{padding: 10px;}
   .back-to-top-link {
  
     top: calc(100vh - 3rem);}

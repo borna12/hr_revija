@@ -215,35 +215,37 @@
       }).map(function (word) {
         return new RegExp(word, 'i');
       });
+      //pokušaj
+      regMap=regMap.join(" ").replace(/\/i/g,"").replace(/\//g,"")
       // Get and sort the results
       let results = searchIndex.reduce(function (results, article, index) {
-
         // Setup priority count
         let priority = 0;
 
         // Assign priority
         if (filter=="Naslov"){
-        for (let reg of regMap) {
-          if (reg.test(article.Title)) {
+        //for (let reg of regMap) {
+          if (article.Title.toLowerCase().includes(regMap)) {
             priority += 100;
           }
           /* try {
            let occurences = article.Autor.match(reg);
            if (occurences) { priority += occurences.length; }
          } catch (error) {console.error(error);}*/
-        }
+       // }
       }
      
       else if (filter=="Autor"){
-        for (let reg of regMap) {
-          if (reg.test(article.Autor)) {
+       // for (let reg of regMap) {
+          //if (reg.test(article.Autor)) {
+          if (article.Autor.toLowerCase().includes(regMap)) {
             priority += 100;
           }
           /* try {
            let occurences = article.Autor.match(reg);
            if (occurences) { priority += occurences.length; }
          } catch (error) {console.error(error);}*/
-        }
+        //}
       }
         // If any matches, push to results
         if (priority > 0) {
@@ -359,6 +361,7 @@
       hash=hash[1]+" "+hash[0]
     }
     $("#odabir").val("Autor").change();
+    
     $("#input-search").val(hash.replace("(*)",""))
     $(".is-info").click();}
 }
